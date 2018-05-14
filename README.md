@@ -1,37 +1,33 @@
 # quartz
 
-#### 项目介绍
-基于quartz的二次集成，支持集群、支持其它项目开发功能，通过功能动态控制定时任务启动、暂停、重启、删除、添加、修改等操作，极大地方便了开发过程。
+#### 项目简介
+1. 基于quartz的二次集成
+2. 支持集群
+3. 支持其它web项目进行功能开发
+4. 动态控制定时任务启动、暂停、重启、删除、添加、修改
+5. 支持多数据库
+6. 支持自实现Scheduler、Job、Trigger监听，系统自动注册
+7. 数据源使用阿里Druid
 
-#### 软件架构
-软件架构说明
+#### 使用教程
 
-
-#### 安装教程
-
-1. xxxx
-2. xxxx
-3. xxxx
+1. 引入依赖
+2. 修改jdbc.properties数据源配置
+3. 实现QuartzTask
+4. 功能开发
+5. 任务展示
+6. 调用接口控制任务
 
 #### 使用说明
 
-1. xxxx
-2. xxxx
-3. xxxx
+1. QuartzUtil 任务获取，其中有获取所有任务列表功能
+2. TaskService 任务服务接口，其中有添加、修改、删除、暂停、重启等功能
+3. AbstractSchedulerListener Scheduler监听，可自行实现自己需要的Scheduler监听
+4. AbstractJobListener Job监听，可自行实现自己需要的Job监听
+5. AbstractTriggerListener Trigger监听，可自行实现自己需要的Trigger监听
 
-#### 参与贡献
-
-1. Fork 本项目
-2. 新建 Feat_xxx 分支
-3. 提交代码
-4. 新建 Pull Request
+#### 版权说明
+quartz使用 [Apache License 2.0][] 协议
 
 
-#### 码云特技
 
-1. 使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2. 码云官方博客 [blog.gitee.com](https://blog.gitee.com)
-3. 你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解码云上的优秀开源项目
-4. [GVP](https://gitee.com/gvp) 全称是码云最有价值开源项目，是码云综合评定出的优秀开源项目
-5. 码云官方提供的使用手册 [http://git.mydoc.io/](http://git.mydoc.io/)
-6. 码云封面人物是一档用来展示码云会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)

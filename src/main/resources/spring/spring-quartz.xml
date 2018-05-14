@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd
+      http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd">
+
+    <context:component-scan base-package="com.xbd.quartz.**"></context:component-scan>
+
+    <context:annotation-config/>
+
+    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="order" value="1"/>
+        <property name="ignoreUnresolvablePlaceholders" value="true"/>
+        <property name="locations">
+            <list>
+                <value>classpath:prop/jdbc.properties</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close">
+        <property name="driverClassName" value="${jdbc.driverClassName}"></property>
+        <property name="url" value="${jdbc.url}"></property>
+        <property name="username" value="${jdbc.username}"></property>
+        <property name="password" value="${jdbc.password}"></property>
+        <!-- 初始化连接大小 -->
+        <property name="initialSize" value="${jdbc.initialSize}"></property>
+        <!-- 连接池最大数量 -->
+        <property name="maxActive" value="${jdbc.maxActive}"></property>
+        <!-- 连接池最大空闲 -->
+        <property name="maxIdle" value="${jdbc.maxIdle}"></property>
+        <!-- 连接池最小空闲 -->
+        <property name="minIdle" value="${jdbc.minIdle}"></property>
+        <!-- 获取连接最大等待时间 -->
+        <property name="maxWait" value="${jdbc.maxWait}"></property>
+        <!--解决连接中断问题-->
+        <property name="testOnBorrow" value="true"></property>
+        <property name="validationQuery" value="select 1 from dual"></property>
+    </bean>
+
+    <!-- 事务管理器配置, Hibernate单数据源事务 -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
+          p:dataSource-ref="dataSource">
+    </bean>
+
+    <bean name="threadPoolTaskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+        <property name="corePoolSize" value="15"/>
+        <property name="maxPoolSize" value="25"/>
+        <property name="queueCapacity" value="100"/>
+    </bean>
+
+    <!-- xml方式配置定时任务信息 -->
+    <!--
+    <bean id="demoJobDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass" value="com.xbd.quartz.DefaultQuartzJobBeanbBean"/>
+        <property name="durability" value="true"/>
+        <property name="description" value="测试job1"/>
+    </bean>
+
+    <bean id="quartzTaskDemo" class="com.xbd.quartz.task.QuartzTaskDemo"></bean>
+
+    <bean id="demoJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="demoJobDetail"/>
+        <property name="cronExpression" value="0 * * * * ? *"/>
+        <property name="jobDataMap">
+            <map>
+                <entry key="targetObject" value="quartzTaskDemo"/>
+                <entry key="targetMethod" value="execute"/>
+            </map>
+        </property>
+    </bean>
+    -->
+
+    <!-- 在JobDetailBean中可以使用自动注入注解的关键性配置 -->
+    <bean id="autowiredSpringBeanJobFactory" class="com.xbd.quartz.AutowiredSpringBeanJobFactory"></bean>
+
+    <!-- 全局作业触发器监听 -->
+    <bean id="defaultGlobalTriggerListener" class="com.xbd.quartz.DefaultGlobalTriggerListener"></bean>
+
+    <!-- 以下是Quartz定时调度配制 -->
+    <bean id="scheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="configLocation" value="classpath:prop/quartz.properties"/>
+        <property name="dataSource" ref="dataSource"/>
+        <property name="schedulerName" value="xbd_scheduler"></property>
+        <property name="taskExecutor" ref="threadPoolTaskExecutor"></property>
+        <!-- 分布式事务 -->
+        <property name="transactionManager" ref="transactionManager"></property>
+        <property name="applicationContextSchedulerContextKey" value="applicationContext"></property>
+        <!-- 在JobDetailBean中可以使用自动注入注解的关键性配置 -->
+        <!-- <property name="jobFactory" ref="autowiredSpringBeanJobFactory"></property> -->
+        <!--可选，QuartzScheduler 启动时更新己存在的Job，这样就不用每次修改targetObject后删除qrtz_job_details表对应记录了 -->
+        <property name="overwriteExistingJobs" value="true"/>
+        <!-- 设置自动启动 -->
+        <property name="autoStartup" value="true"/>
+        <property name="startupDelay" value="5"/>
+        <!-- xml方式配置定时任务触发信息 -->
+        <!--
+        <property name="triggers">
+            <list>
+                <ref bean="demoJobTrigger"/>
+            </list>
+        </property>
+        -->
+        <property name="globalTriggerListeners">
+            <array>
+                <ref bean="defaultGlobalTriggerListener"/>
+            </array>
+        </property>
+    </bean>
+
+    <bean id="quartzListenerAware" class="com.xbd.quartz.QuartzListenerAware">
+        <property name="scheduler" ref="scheduler"></property>
+    </bean>
+
+    <bean id="quartzUtil" class="com.xbd.quartz.util.QuartzUtil"></bean>
+
+    <bean id="taskService" class="com.xbd.quartz.service.impl.TaskServiceImpl">
+        <property name="scheduler" ref="scheduler"></property>
+    </bean>
+</beans>
+
