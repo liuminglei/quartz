@@ -28,6 +28,14 @@ public class QuartzTaskVO implements Serializable {
 
     private String cronExpression;
 
+    /**
+     * @see org.quartz.CronTrigger#MISFIRE_INSTRUCTION_SMART_POLICY
+     * @see org.quartz.CronTrigger#MISFIRE_INSTRUCTION_DO_NOTHING
+     * @see org.quartz.CronTrigger#MISFIRE_INSTRUCTION_FIRE_ONCE_NOW
+     * @see org.quartz.CronTrigger#MISFIRE_INSTRUCTION_IGNORE_MISFIRE_POLICY
+     */
+    private int misfireInstruction;
+
     public String getName() {
         return name;
     }
@@ -98,5 +106,13 @@ public class QuartzTaskVO implements Serializable {
 
     public void setCronExpression(String cronExpression) {
         this.cronExpression = cronExpression;
+    }
+
+    public int getMisfireInstruction() {
+        return misfireInstruction;
+    }
+
+    public void setMisfireInstruction(int misfireInstruction) {
+        this.misfireInstruction = misfireInstruction;
     }
 }

@@ -4,8 +4,6 @@ import com.xbd.quartz.DefaultQuartzJobBean;
 
 public abstract class AbstractQuartzTask implements QuartzTask {
 	
-	public final static String TASK_GROUP_DEFAULT = "DEFAULT";
-	
 	public abstract String getName();
 	
 	public String getGroup() {

@@ -18,14 +18,7 @@ public class TaskServiceImpl implements TaskService {
                 .storeDurably()
                 .build();
 
-        CronScheduleBuilder cronScheduleBuilder = CronScheduleBuilder
-                .cronSchedule(quartzTaskVO.getCronExpression())
-                // 不触发立即执行，等待下次Cron触发频率到达时刻开始按照Cron频率依次执行
-                .withMisfireHandlingInstructionDoNothing()
-                // 以当前时间为触发频率立刻触发一次执行，然后按照Cron频率依次执行
-                .withMisfireHandlingInstructionFireAndProceed()
-                // 以错过的第一个频率时间立刻开始执行，重做错过的所有频率周期后，当下一次触发频率发生时间大于当前时间后，再按照正常的Cron频率依次执行
-                .withMisfireHandlingInstructionIgnoreMisfires();
+        CronScheduleBuilder cronScheduleBuilder = initCronScheduleBuilder(quartzTaskVO);
 
         TriggerBuilder<CronTrigger> triggerBuilder = TriggerBuilder.newTrigger()
                 .withIdentity(TriggerKey.triggerKey(quartzTaskVO.getName(), quartzTaskVO.getGroup()))
@@ -57,14 +50,7 @@ public class TaskServiceImpl implements TaskService {
     public void updateTask(QuartzTaskVO quartzTaskVO) throws SchedulerException {
         CronTrigger cronTrigger = getTrigger(quartzTaskVO.getName(), quartzTaskVO.getGroup());
 
-        CronScheduleBuilder cronScheduleBuilder = CronScheduleBuilder
-                .cronSchedule(quartzTaskVO.getCronExpression())
-                // 不触发立即执行
-                .withMisfireHandlingInstructionDoNothing()
-                // 以当前时间为触发频率立刻触发一次执行，然后按照Cron频率依次执行
-                .withMisfireHandlingInstructionFireAndProceed()
-                // 以错过的第一个频率时间立刻开始执行，重做错过的所有频率周期后，当下一次触发频率发生时间大于当前时间后，再按照正常的Cron频率依次执行
-                .withMisfireHandlingInstructionIgnoreMisfires();
+        CronScheduleBuilder cronScheduleBuilder = initCronScheduleBuilder(quartzTaskVO);
 
         TriggerBuilder<CronTrigger> triggerBuilder = cronTrigger
                 .getTriggerBuilder()
@@ -130,18 +116,35 @@ public class TaskServiceImpl implements TaskService {
         scheduler.deleteJob(jobKey);
     }
 
-    private CronTrigger getTrigger(String name, String group) throws SchedulerException {
-        CronTrigger cronTrigger = (CronTrigger) scheduler.getTrigger(new TriggerKey(name, group));
-
-        return cronTrigger;
-    }
-
     public void deleteTask(QuartzTaskVO... quartzTaskVOs) throws SchedulerException {
         if (quartzTaskVOs != null) {
             for (QuartzTaskVO quartzTaskVO : quartzTaskVOs) {
                 deleteTask(quartzTaskVO);
             }
         }
+    }
+
+    private CronScheduleBuilder initCronScheduleBuilder(QuartzTaskVO quartzTaskVO) {
+        CronScheduleBuilder cronScheduleBuilder = CronScheduleBuilder.cronSchedule(quartzTaskVO.getCronExpression());
+
+        // 以当前时间为触发频率立刻触发一次执行，然后按照Cron频率依次执行
+        if (quartzTaskVO.getMisfireInstruction() == CronTrigger.MISFIRE_INSTRUCTION_FIRE_ONCE_NOW) {
+            cronScheduleBuilder.withMisfireHandlingInstructionFireAndProceed();
+        } else if (quartzTaskVO.getMisfireInstruction() == CronTrigger.MISFIRE_INSTRUCTION_IGNORE_MISFIRE_POLICY) {
+            // 以错过的第一个频率时间立刻开始执行，重做错过的所有频率周期后，当下一次触发频率发生时间大于当前时间后，再按照正常的Cron频率依次执行
+            cronScheduleBuilder.withMisfireHandlingInstructionIgnoreMisfires();
+        } else if (quartzTaskVO.getMisfireInstruction() == CronTrigger.MISFIRE_INSTRUCTION_DO_NOTHING) {
+            // 不触发立即执行，等待下次Cron触发频率到达时刻开始按照Cron频率依次执行
+            cronScheduleBuilder.withMisfireHandlingInstructionDoNothing();
+        }
+
+        return cronScheduleBuilder;
+    }
+
+    private CronTrigger getTrigger(String name, String group) throws SchedulerException {
+        CronTrigger cronTrigger = (CronTrigger) scheduler.getTrigger(new TriggerKey(name, group));
+
+        return cronTrigger;
     }
 
     public Scheduler getScheduler() {
