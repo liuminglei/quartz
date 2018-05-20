@@ -27,7 +27,7 @@
 5. AbstractTriggerListener Trigger监听，可自行实现自己需要的Trigger监听
 
 #### 版权说明
-quartz使用 [Apache License 2.0][] 协议
+quartz使用 [Apache License 2.0](https://gitee.com/xbd521/quartz/blob/master/LICENSE "Apache License 2.0") 协议
 
 
 
