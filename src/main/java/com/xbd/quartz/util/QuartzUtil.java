@@ -11,6 +11,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * <p>
+ * 定时任务工具类
+ * </p>
+ *
+ * @author 小不点
+ */
 public class QuartzUtil implements ApplicationContextAware {
 
     private ApplicationContext applicationContext;
@@ -20,6 +27,11 @@ public class QuartzUtil implements ApplicationContextAware {
         this.applicationContext = applicationContext;
     }
 
+    /**
+     * 将定义的定时任务SpringBean加载并转换为定时任务信息实体
+     *
+     * @return 定时任务信息列表
+     */
     public List<QuartzTaskVO> tasks() {
         Map<String, QuartzTask> quartzTaskMap = applicationContext.getBeansOfType(QuartzTask.class);
 

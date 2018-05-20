@@ -7,6 +7,13 @@ import org.quartz.TriggerListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * <p>
+ * 默认全局TriggerListener
+ * </p>
+ *
+ * @author 小不点
+ */
 public class DefaultGlobalTriggerListener implements TriggerListener {
 
 	private Logger log = LoggerFactory.getLogger(getClass());

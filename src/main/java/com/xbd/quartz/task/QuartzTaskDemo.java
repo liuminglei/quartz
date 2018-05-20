@@ -3,6 +3,13 @@ package com.xbd.quartz.task;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * <p>
+ * 定时任务demo
+ * </p>
+ *
+ * @author 小不点
+ */
 public class QuartzTaskDemo extends AbstractQuartzTask {
 
     private final Logger log = LoggerFactory.getLogger(getClass());

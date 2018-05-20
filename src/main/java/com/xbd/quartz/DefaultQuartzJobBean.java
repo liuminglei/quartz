@@ -9,6 +9,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 
+/**
+ * <p>
+ * 默认定时任务QuartzJobBean
+ * </p>
+ *
+ * @author 小不点
+ */
 public class DefaultQuartzJobBean extends QuartzJobBean {
 	private static final Logger logger = LoggerFactory.getLogger(DefaultQuartzJobBean.class.getName());
 

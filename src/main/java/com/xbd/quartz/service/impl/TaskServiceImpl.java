@@ -6,10 +6,32 @@ import com.xbd.quartz.vo.QuartzTaskVO;
 import org.apache.commons.lang3.StringUtils;
 import org.quartz.*;
 
+/**
+ * <p>
+ * 任务动态注册服务，提供新增任务、修改任务、暂停任务、继续任务、删除任务等动态注册服务。
+ * </p>
+ *
+ * @see QuartzTaskVO
+ * @see Scheduler
+ *
+ * @author 小不点
+ */
 public class TaskServiceImpl implements TaskService {
 
     private Scheduler scheduler;
 
+    /**
+     * <p>
+     * <b>动态添加任务</b><br>
+     * <code>QuartzTaskVO</code>中包含定时任务的一些必要和扩展信息，但一些重要信息，如任务名称、cron表达式、
+     * 任务目标类、任务目标类SpringBean对象、任务目标类执行方法等不允许为空。
+     * </p>
+     *
+     * @see QuartzTaskVO
+     *
+     * @param quartzTaskVO 定时任务信息
+     * @throws SchedulerException
+     */
     public void addTask(QuartzTaskVO quartzTaskVO) throws SchedulerException {
         JobDetail jobDetail = JobBuilder
                 .newJob(DefaultQuartzJobBean.class)
@@ -39,6 +61,18 @@ public class TaskServiceImpl implements TaskService {
         scheduler.scheduleJob(jobDetail, cronTrigger);
     }
 
+    /**
+     * <p>
+     * <b>批量动态添加任务</b><br>
+     * <code>QuartzTaskVO</code>中包含定时任务的一些必要和扩展信息，但一些重要信息，如任务名称、cron表达式、
+     * 任务目标类、任务目标类SpringBean对象、任务目标类执行方法等不允许为空。
+     * </p>
+     *
+     * @see QuartzTaskVO
+     *
+     * @param quartzTaskVOs 定时任务信息集合
+     * @throws SchedulerException
+     */
     public void addTask(QuartzTaskVO... quartzTaskVOs) throws SchedulerException {
         if (quartzTaskVOs != null) {
             for (QuartzTaskVO quartzTaskVO : quartzTaskVOs) {
@@ -47,6 +81,18 @@ public class TaskServiceImpl implements TaskService {
         }
     }
 
+    /**
+     * <p>
+     * <b>动态更新任务</b><br>
+     * <code>QuartzTaskVO</code>中包含定时任务的一些必要和扩展信息，但一些重要信息，如任务名称、cron表达式、
+     * 任务目标类、任务目标类SpringBean对象、任务目标类执行方法等不允许为空。
+     * </p>
+     *
+     * @see QuartzTaskVO
+     *
+     * @param quartzTaskVO 定时任务信息
+     * @throws SchedulerException
+     */
     public void updateTask(QuartzTaskVO quartzTaskVO) throws SchedulerException {
         CronTrigger cronTrigger = getTrigger(quartzTaskVO.getName(), quartzTaskVO.getGroup());
 
@@ -73,6 +119,18 @@ public class TaskServiceImpl implements TaskService {
                 cronTrigger);
     }
 
+    /**
+     * <p>
+     * <b>批量动态更新任务</b><br>
+     * <code>QuartzTaskVO</code>中包含定时任务的一些必要和扩展信息，但一些重要信息，如任务名称、cron表达式、
+     * 任务目标类、任务目标类SpringBean对象、任务目标类执行方法等不允许为空。
+     * </p>
+     *
+     * @see QuartzTaskVO
+     *
+     * @param quartzTaskVOs 定时任务信息集合
+     * @throws SchedulerException
+     */
     public void updateTask(QuartzTaskVO... quartzTaskVOs) throws SchedulerException {
         if (quartzTaskVOs != null) {
             for (QuartzTaskVO quartzTaskVO : quartzTaskVOs) {
@@ -81,11 +139,35 @@ public class TaskServiceImpl implements TaskService {
         }
     }
 
+    /**
+     * <p>
+     * <b>暂停任务</b><br>
+     * <code>QuartzTaskVO</code>中包含定时任务的一些必要和扩展信息，但一些重要信息，如任务名称、cron表达式、
+     * 任务目标类、任务目标类SpringBean对象、任务目标类执行方法等不允许为空。
+     * </p>
+     *
+     * @see QuartzTaskVO
+     *
+     * @param quartzTaskVO 定时任务信息
+     * @throws SchedulerException
+     */
     public void pauseTask(QuartzTaskVO quartzTaskVO) throws SchedulerException {
         JobKey jobKey = new JobKey(quartzTaskVO.getName(), quartzTaskVO.getGroup());
         scheduler.pauseJob(jobKey);
     }
 
+    /**
+     * <p>
+     * <b>批量暂停任务</b><br>
+     * <code>QuartzTaskVO</code>中包含定时任务的一些必要和扩展信息，但一些重要信息，如任务名称、cron表达式、
+     * 任务目标类、任务目标类SpringBean对象、任务目标类执行方法等不允许为空。
+     * </p>
+     *
+     * @see QuartzTaskVO
+     *
+     * @param quartzTaskVOs 定时任务信息集合
+     * @throws SchedulerException
+     */
     public void pauseTask(QuartzTaskVO... quartzTaskVOs) throws SchedulerException {
         if (quartzTaskVOs != null) {
             for (QuartzTaskVO quartzTaskVO : quartzTaskVOs) {
@@ -94,15 +176,46 @@ public class TaskServiceImpl implements TaskService {
         }
     }
 
+    /**
+     * <p>
+     * 暂停所有任务
+     * </p>
+     *
+     * @throws SchedulerException
+     */
     public void pauseTask() throws SchedulerException {
         scheduler.pauseAll();
     }
 
+    /**
+     * <p>
+     * <b>继续任务</b><br>
+     * <code>QuartzTaskVO</code>中包含定时任务的一些必要和扩展信息，但一些重要信息，如任务名称、cron表达式、
+     * 任务目标类、任务目标类SpringBean对象、任务目标类执行方法等不允许为空。
+     * </p>
+     *
+     * @see QuartzTaskVO
+     *
+     * @param quartzTaskVO 定时任务信息
+     * @throws SchedulerException
+     */
     public void resumeTask(QuartzTaskVO quartzTaskVO) throws SchedulerException {
         JobKey jobKey = new JobKey(quartzTaskVO.getName(), quartzTaskVO.getGroup());
         scheduler.resumeJob(jobKey);
     }
 
+    /**
+     * <p>
+     * <b>批量继续任务</b><br>
+     * <code>QuartzTaskVO</code>中包含定时任务的一些必要和扩展信息，但一些重要信息，如任务名称、cron表达式、
+     * 任务目标类、任务目标类SpringBean对象、任务目标类执行方法等不允许为空。
+     * </p>
+     *
+     * @see QuartzTaskVO
+     *
+     * @param quartzTaskVOs 定时任务信息集合
+     * @throws SchedulerException
+     */
     public void resumeTask(QuartzTaskVO... quartzTaskVOs) throws SchedulerException {
         if (quartzTaskVOs != null) {
             for (QuartzTaskVO quartzTaskVO : quartzTaskVOs) {
@@ -111,11 +224,35 @@ public class TaskServiceImpl implements TaskService {
         }
     }
 
+    /**
+     * <p>
+     * <b>删除任务</b><br>
+     * <code>QuartzTaskVO</code>中包含定时任务的一些必要和扩展信息，但一些重要信息，如任务名称、cron表达式、
+     * 任务目标类、任务目标类SpringBean对象、任务目标类执行方法等不允许为空。
+     * </p>
+     *
+     * @see QuartzTaskVO
+     *
+     * @param quartzTaskVO 定时任务信息
+     * @throws SchedulerException
+     */
     public void deleteTask(QuartzTaskVO quartzTaskVO) throws SchedulerException {
         JobKey jobKey = new JobKey(quartzTaskVO.getName(), quartzTaskVO.getGroup());
         scheduler.deleteJob(jobKey);
     }
 
+    /**
+     * <p>
+     * <b>批量删除任务</b><br>
+     * <code>QuartzTaskVO</code>中包含定时任务的一些必要和扩展信息，但一些重要信息，如任务名称、cron表达式、
+     * 任务目标类、任务目标类SpringBean对象、任务目标类执行方法等不允许为空。
+     * </p>
+     *
+     * @see QuartzTaskVO
+     *
+     * @param quartzTaskVOs 定时任务信息集合
+     * @throws SchedulerException
+     */
     public void deleteTask(QuartzTaskVO... quartzTaskVOs) throws SchedulerException {
         if (quartzTaskVOs != null) {
             for (QuartzTaskVO quartzTaskVO : quartzTaskVOs) {
@@ -124,6 +261,17 @@ public class TaskServiceImpl implements TaskService {
         }
     }
 
+    /**
+     * <p>
+     * 根据定时任务信息组织CronScheduleBuilder
+     * </p>
+     *
+     * @see CronScheduleBuilder
+     * @see QuartzTaskVO
+     *
+     * @param quartzTaskVO 定时任务信息
+     * @return
+     */
     private CronScheduleBuilder initCronScheduleBuilder(QuartzTaskVO quartzTaskVO) {
         CronScheduleBuilder cronScheduleBuilder = CronScheduleBuilder.cronSchedule(quartzTaskVO.getCronExpression());
 
@@ -141,6 +289,15 @@ public class TaskServiceImpl implements TaskService {
         return cronScheduleBuilder;
     }
 
+    /**
+     * <p>
+     * 根据任务名称、任务分组获取定时任务调度器中的该任务
+     * </p>
+     *
+     * @param name
+     * @param group
+     * @throws SchedulerException
+     */
     private CronTrigger getTrigger(String name, String group) throws SchedulerException {
         CronTrigger cronTrigger = (CronTrigger) scheduler.getTrigger(new TriggerKey(name, group));
 

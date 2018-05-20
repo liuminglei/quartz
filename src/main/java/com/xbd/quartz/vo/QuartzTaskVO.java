@@ -6,6 +6,16 @@ import org.apache.commons.lang3.StringUtils;
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * <p>
+ *  定时任务实体，包含任务名称、任务分组、任务描述、任务开始时间、是否立即开始、
+ *  任务结束时间、任务目标类、任务目标类SpringBean对象、任务目标类执行方法、cron表达式等属性
+ * </p>
+ *
+ * @see com.xbd.quartz.task.QuartzTask
+ *
+ * @author 小不点
+ */
 public class QuartzTaskVO implements Serializable {
 
     private static final long serialVersionUID = -2116518270025568628L;
@@ -29,6 +39,10 @@ public class QuartzTaskVO implements Serializable {
     private String cronExpression;
 
     /**
+     * <p>
+     *  任务错过触发时间执行策略
+     * </p>
+     *
      * @see org.quartz.CronTrigger#MISFIRE_INSTRUCTION_SMART_POLICY
      * @see org.quartz.CronTrigger#MISFIRE_INSTRUCTION_DO_NOTHING
      * @see org.quartz.CronTrigger#MISFIRE_INSTRUCTION_FIRE_ONCE_NOW

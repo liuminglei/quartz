@@ -14,6 +14,13 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
+/**
+ * <p>
+ * JobListener、SchedulerListener、TriggerListener自动注册监听
+ * </p>
+ *
+ * @author 小不点
+ */
 public class QuartzListenerAware implements ApplicationContextAware,
 		InitializingBean {
 
@@ -30,6 +37,13 @@ public class QuartzListenerAware implements ApplicationContextAware,
 		awareTriggerListeners();
 	}
 
+	/**
+	 * <p>
+	 * 自动注册SchedulerListener
+	 * </p>
+	 *
+	 * @throws Exception
+	 */
 	private void awareSchedulerListeners() throws Exception {
 		log.info("--------加载SchedulerListener开始--------");
 		Map<String, AbstractSchedulerListener> schedulerListenerMap = applicationContext.getBeansOfType(AbstractSchedulerListener.class);
@@ -46,6 +60,13 @@ public class QuartzListenerAware implements ApplicationContextAware,
 		log.info("--------加载SchedulerListener结束--------");
 	}
 
+	/**
+	 * <p>
+	 * 自动注册JobListener
+	 * </p>
+	 *
+	 * @throws Exception
+	 */
 	private void awareJobListeners() throws Exception {
 		log.info("--------加载JobListener开始--------");
 		Map<String, AbstractJobListener> jobListenerMap = applicationContext.getBeansOfType(AbstractJobListener.class);
@@ -62,6 +83,13 @@ public class QuartzListenerAware implements ApplicationContextAware,
 		log.info("--------加载JobListener结束--------");
 	}
 
+	/**
+	 * <p>
+	 * 自动注册TriggerListener
+	 * </p>
+	 *
+	 * @throws Exception
+	 */
 	private void awareTriggerListeners() throws Exception {
 		log.info("--------加载TriggerListener开始--------");
 		Map<String, AbstractTriggerListener> triggerListenerMap = applicationContext.getBeansOfType(AbstractTriggerListener.class);
