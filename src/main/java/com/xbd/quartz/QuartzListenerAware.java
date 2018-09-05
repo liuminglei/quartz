@@ -21,8 +21,7 @@ import org.springframework.context.ApplicationContextAware;
  *
  * @author 小不点
  */
-public class QuartzListenerAware implements ApplicationContextAware,
-		InitializingBean {
+public class QuartzListenerAware implements ApplicationContextAware, InitializingBean {
 
 	private Logger log = LoggerFactory.getLogger(getClass());
 

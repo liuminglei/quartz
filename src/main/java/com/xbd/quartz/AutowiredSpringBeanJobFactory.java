@@ -1,8 +1,8 @@
 package com.xbd.quartz;
 
 import org.quartz.spi.TriggerFiredBundle;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.scheduling.quartz.SpringBeanJobFactory;
 
 /**
@@ -12,16 +12,20 @@ import org.springframework.scheduling.quartz.SpringBeanJobFactory;
  *
  * @author 小不点
  */
-public class AutowiredSpringBeanJobFactory extends SpringBeanJobFactory {
-	
-	@Autowired
-	private AutowireCapableBeanFactory autowireCapableBeanFactory;
+public class AutowiredSpringBeanJobFactory extends SpringBeanJobFactory implements ApplicationContextAware {
+
+	private ApplicationContext applicationContext;
 
 	@Override
-	protected Object createJobInstance(TriggerFiredBundle bundle)
-			throws Exception {
+	protected Object createJobInstance(TriggerFiredBundle bundle) throws Exception {
 		Object job = super.createJobInstance(bundle);
-		autowireCapableBeanFactory.autowireBean(job);
+		this.applicationContext.getAutowireCapableBeanFactory().autowireBean(job);
 		return job;
 	}
+
+	@Override
+	public void setApplicationContext(ApplicationContext applicationContext) {
+		this.applicationContext = applicationContext;
+	}
+
 }

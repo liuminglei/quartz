@@ -13,7 +13,7 @@
         <property name="ignoreUnresolvablePlaceholders" value="true"/>
         <property name="locations">
             <list>
-                <value>classpath:prop/jdbc.properties</value>
+                <value>classpath:jdbc.properties</value>
             </list>
         </property>
     </bean>
@@ -27,8 +27,6 @@
         <property name="initialSize" value="${jdbc.initialSize}"></property>
         <!-- 连接池最大数量 -->
         <property name="maxActive" value="${jdbc.maxActive}"></property>
-        <!-- 连接池最大空闲 -->
-        <property name="maxIdle" value="${jdbc.maxIdle}"></property>
         <!-- 连接池最小空闲 -->
         <property name="minIdle" value="${jdbc.minIdle}"></property>
         <!-- 获取连接最大等待时间 -->
@@ -75,11 +73,11 @@
     <bean id="autowiredSpringBeanJobFactory" class="com.xbd.quartz.AutowiredSpringBeanJobFactory"></bean>
 
     <!-- 全局作业触发器监听 -->
-    <bean id="defaultGlobalTriggerListener" class="com.xbd.quartz.DefaultGlobalTriggerListener"></bean>
+    <bean id="defaultGlobalTriggerListener" class="com.xbd.quartz.listener.trigger.DefaultGlobalTriggerListener"></bean>
 
     <!-- 以下是Quartz定时调度配制 -->
     <bean id="scheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
-        <property name="configLocation" value="classpath:prop/quartz.properties"/>
+        <property name="configLocation" value="classpath:quartz.properties"/>
         <property name="dataSource" ref="dataSource"/>
         <property name="schedulerName" value="xbd_scheduler"></property>
         <property name="taskExecutor" ref="threadPoolTaskExecutor"></property>

@@ -1,24 +1,9 @@
-package com.xbd.quartz.vo;
-
-import com.xbd.quartz.task.AbstractQuartzTask;
-import org.apache.commons.lang3.StringUtils;
+package com.xbd.quartz;
 
 import java.io.Serializable;
 import java.util.Date;
 
-/**
- * <p>
- *  定时任务实体，包含任务名称、任务分组、任务描述、任务开始时间、是否立即开始、
- *  任务结束时间、任务目标类、任务目标类SpringBean对象、任务目标类执行方法、cron表达式等属性
- * </p>
- *
- * @see com.xbd.quartz.task.QuartzTask
- *
- * @author 小不点
- */
-public class QuartzTaskVO implements Serializable {
-
-    private static final long serialVersionUID = -2116518270025568628L;
+public class QuartzTask implements Serializable {
 
     private String name;
 
@@ -36,12 +21,12 @@ public class QuartzTaskVO implements Serializable {
 
     private String targetMethod;
 
+    private String targetMethodParam;
+
     private String cronExpression;
 
     /**
-     * <p>
      *  任务错过触发时间执行策略
-     * </p>
      *
      * @see org.quartz.CronTrigger#MISFIRE_INSTRUCTION_SMART_POLICY
      * @see org.quartz.CronTrigger#MISFIRE_INSTRUCTION_DO_NOTHING
@@ -59,7 +44,7 @@ public class QuartzTaskVO implements Serializable {
     }
 
     public String getGroup() {
-        return StringUtils.isBlank(group) ? AbstractQuartzTask.TASK_GROUP_DEFAULT : group;
+        return group;
     }
 
     public void setGroup(String group) {
@@ -114,6 +99,14 @@ public class QuartzTaskVO implements Serializable {
         this.targetMethod = targetMethod;
     }
 
+    public String getTargetMethodParam() {
+        return targetMethodParam;
+    }
+
+    public void setTargetMethodParam(String targetMethodParam) {
+        this.targetMethodParam = targetMethodParam;
+    }
+
     public String getCronExpression() {
         return cronExpression;
     }
@@ -129,4 +122,5 @@ public class QuartzTaskVO implements Serializable {
     public void setMisfireInstruction(int misfireInstruction) {
         this.misfireInstruction = misfireInstruction;
     }
+
 }

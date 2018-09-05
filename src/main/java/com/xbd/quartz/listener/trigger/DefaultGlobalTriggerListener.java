@@ -1,9 +1,9 @@
-package com.xbd.quartz;
+package com.xbd.quartz.listener.trigger;
 
+import com.xbd.quartz.listener.AbstractTriggerListener;
 import org.quartz.JobExecutionContext;
 import org.quartz.Trigger;
 import org.quartz.Trigger.CompletedExecutionInstruction;
-import org.quartz.TriggerListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author 小不点
  */
-public class DefaultGlobalTriggerListener implements TriggerListener {
+public class DefaultGlobalTriggerListener extends AbstractTriggerListener {
 
 	private Logger log = LoggerFactory.getLogger(getClass());
 
