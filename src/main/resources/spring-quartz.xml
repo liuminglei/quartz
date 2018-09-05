@@ -112,8 +112,5 @@
 
     <bean id="quartzUtil" class="com.xbd.quartz.util.QuartzUtil"></bean>
 
-    <bean id="taskService" class="com.xbd.quartz.service.impl.TaskServiceImpl">
-        <property name="scheduler" ref="scheduler"></property>
-    </bean>
 </beans>
 
