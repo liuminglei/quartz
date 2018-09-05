@@ -1,5 +1,8 @@
 package com.xbd.quartz;
 
+import com.xbd.quartz.task.AbstractQuartzTask;
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -44,7 +47,7 @@ public class QuartzTask implements Serializable {
     }
 
     public String getGroup() {
-        return group;
+        return StringUtils.isBlank(group) ? AbstractQuartzTask.GROUP_DEFAULT : group;
     }
 
     public void setGroup(String group) {

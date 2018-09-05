@@ -1,7 +1,6 @@
 package com.xbd.quartz.task;
 
 import com.alibaba.fastjson.JSONObject;
-import com.xbd.quartz.AbstractQuartzTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;

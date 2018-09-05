@@ -3,6 +3,7 @@ package com.xbd.quartz.handler;
 import com.xbd.quartz.DefaultQuartzJobBean;
 import com.xbd.quartz.QuartzTask;
 import com.xbd.quartz.QuartzTaskHandler;
+import com.xbd.quartz.task.AbstractQuartzTask;
 import org.apache.commons.lang3.StringUtils;
 import org.quartz.*;
 
@@ -34,7 +35,7 @@ public class DefaultQuartzTaskHandler extends QuartzTaskHandler {
                 .withSchedule(cronScheduleBuilder)
                 .usingJobData(DefaultQuartzJobBean.JOBDETAIL_KEY_TARGETCLASS, quartzTask.getTargetClass())
                 .usingJobData(DefaultQuartzJobBean.JOBDETAIL_KEY_TARGETOBJECT, quartzTask.getTargetObject())
-                .usingJobData(DefaultQuartzJobBean.JOBDETAIL_KEY_TARGETMETHOD, StringUtils.isBlank(quartzTask.getTargetMethod()) ? DefaultQuartzJobBean.JOBDETAIL_VALUE_TARGETMETHOD : quartzTask.getTargetMethod())
+                .usingJobData(DefaultQuartzJobBean.JOBDETAIL_KEY_TARGETMETHOD, StringUtils.isBlank(quartzTask.getTargetMethod()) ? AbstractQuartzTask.TARGETMETHOD_DEFAULT : quartzTask.getTargetMethod())
                 .usingJobData(DefaultQuartzJobBean.JOBDETAIL_KEY_TARGETMETHOD_PARAM, quartzTask.getTargetMethodParam());
 
         if (quartzTask.getStartAt() != null) {
